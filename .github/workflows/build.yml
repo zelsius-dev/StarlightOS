@@ -19,9 +19,19 @@ jobs:
       - name: Initialize repo
         run: |
           mkdir rom && cd rom
-          git config --global user.name "Zelsius"
+          git config --global user.name "zelsius-dev"
           git config --global user.email "zelsius.dev@gmail.com"
           repo init -u https://github.com/LineageOS/android.git -b lineage-22.0
         shell: bash
 
-      # More steps like syncing sources, applying patches, device trees, and build commands will follow
+- name: Sync source
+        run: |
+          cd rom
+          repo sync -j4 --force-sync --no-clone-bundle --no-tags
+
+      - name: Clone device trees
+        run: |
+          cd rom
+          git clone https://github.com/zelsius-dev/device_xiaomi_citrus.git -b lineage-22 device/xiaomi/citrus
+          git clone https://github.com/zelsius-dev/vendor_xiaomi_citrus.git -b lineage-22 vendor/xiaomi/citrus
+          git clone https://github.com/zelsius-dev/kernel_xiaomi_citrus.git -b lineage-22 kernel/xiaomi/citrus
