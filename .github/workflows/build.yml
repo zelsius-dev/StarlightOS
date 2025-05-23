@@ -1,0 +1,27 @@
+name: Build StarlightOS for Citrus
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build ROM
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up environment
+        run: |
+          sudo apt update
+          sudo apt install -y bc bison build-essential curl flex git gnupg gperf imagemagick libncurses5-dev libssl-dev libxml2-utils lzop openjdk-17-jdk pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
+
+      - name: Initialize repo
+        run: |
+          mkdir rom && cd rom
+          git config --global user.name "Zelsius"
+          git config --global user.email "zelsius.dev@gmail.com"
+          repo init -u https://github.com/LineageOS/android.git -b lineage-22.0
+        shell: bash
+
+      # More steps like syncing sources, applying patches, device trees, and build commands will follow
